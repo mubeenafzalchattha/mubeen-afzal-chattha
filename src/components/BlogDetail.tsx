@@ -1,13 +1,9 @@
+import React from "react";
 import Card from "./Card";
-import { POSTS } from "../data/posts";
+import { getBlogs } from "../services/blogService";
 import type { Post } from "../data/posts";
 
-function usePostBySlug(slug: string | null): Post | undefined {
-  if (!slug) return undefined;
-  return POSTS.find((p) => p.slug === slug);
-}
-
-function CategorySidebar({ active }: { active?: Post["category"] }) {
+function CategorySidebar({ active, posts }: { active?: Post["category"]; posts: Post[] }) {
   const categories: Post["category"][] = ["travel", "marketing", "dev"];
   return (
     <aside className="w-full md:w-64">
@@ -30,7 +26,7 @@ function CategorySidebar({ active }: { active?: Post["category"] }) {
         <Card className="mt-4">
           <h3 className="font-semibold text-sm">All posts</h3>
           <ul className="mt-3 space-y-2">
-            {POSTS.map((p) => (
+            {posts.map((p) => (
               <li key={p.id}>
                 <a href={`#blog/${p.slug}`} className="text-sm text-gray-700 hover:text-red-900">
                   {p.title}
@@ -45,7 +41,29 @@ function CategorySidebar({ active }: { active?: Post["category"] }) {
 }
 
 export default function BlogDetail({ slug }: { slug: string | null }) {
-  const post = usePostBySlug(slug);
+  const [posts, setPosts] = React.useState<Post[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    async function fetchPosts() {
+      const fetchedPosts = await getBlogs();
+      setPosts(fetchedPosts);
+      setLoading(false);
+    }
+    fetchPosts();
+  }, []);
+
+  const post = slug ? posts.find((p) => p.slug === slug) : undefined;
+
+  if (loading) {
+    return (
+      <div className="md:col-span-2">
+        <Card>
+          <div className="text-sm text-gray-600">Loading...</div>
+        </Card>
+      </div>
+    );
+  }
 
   if (!post) {
     return (
@@ -67,7 +85,7 @@ export default function BlogDetail({ slug }: { slug: string | null }) {
           <p className="text-sm text-gray-700 mt-4 leading-6">{post.content}</p>
         </Card>
       </div>
-      <CategorySidebar active={post.category} />
+      <CategorySidebar active={post.category} posts={posts} />
     </>
   );
 }

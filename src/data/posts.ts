@@ -7,6 +7,7 @@ export type Post = {
   content: string;
 };
 
+// Keep this for backward compatibility, but components should use the service
 export const POSTS: Post[] = [
   // {
   //   id: "p1",

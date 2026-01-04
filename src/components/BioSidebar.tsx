@@ -2,9 +2,9 @@ import mubeenCoding from "../assets/mubeen-afzal-chattha-sniff-coding.gif";
 
 export default function BioSidebar() {
   return (
-    <aside className="w-80 p-6 lg:block">
-      <div className="sticky top-6">
-        <div className="bg-white p-4 rounded-lg border shadow-sm">
+<aside className="hidden lg:!block w-80 p-6 fixed right-0 top-0 h-screen overflow-y-auto hide-scrollbar">
+<div className="pt-6">
+        <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-xl">
           <h4 className="font-semibold">Mubeen Afzal Chattha</h4>
           <p className="text-sm text-gray-600 mt-2"></p>
           <p className="text-sm text-gray-600 mt-2"></p>

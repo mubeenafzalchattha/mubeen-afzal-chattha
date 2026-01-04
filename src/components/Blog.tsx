@@ -1,7 +1,35 @@
+import React from "react";
 import Card from "./Card";
-import { POSTS } from "../data/posts";
+import { getBlogs } from "../services/blogService";
+import type { Post } from "../data/posts";
 
 export default function Blog() {
+  const [posts, setPosts] = React.useState<Post[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    async function fetchPosts() {
+      const fetchedPosts = await getBlogs();
+      setPosts(fetchedPosts);
+      setLoading(false);
+    }
+    fetchPosts();
+  }, []);
+
+  if (loading) {
+    return (
+      <Card className="md:col-span-2">
+        <div className="flex justify-between items-center">
+          <h2 className="section-title">My Journal</h2>
+          <a href="#blog" className="text-xs text-red-900 hover:underline">
+            View all posts →
+          </a>
+        </div>
+        <div className="mt-4 text-sm text-gray-600">Loading...</div>
+      </Card>
+    );
+  }
+
   return (
     <Card className="md:col-span-2">
       <div className="flex justify-between items-center">
@@ -11,7 +39,7 @@ export default function Blog() {
         </a>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-        {POSTS.slice(0, 2).map((p) => (
+        {posts.slice(0, 2).map((p) => (
           <a
             key={p.id}
             href={`#blog/${p.slug}`}

@@ -4,6 +4,7 @@ import Home from "./components/Home";
 import Blog from "./components/Blog";
 import BlogPage from "./components/BlogPage";
 import Stack from "./components/Stack";
+import Projects from "./components/Projects";
 import MoviesAnime from "./components/MoviesAnime";
 import Books from "./components/Books";
 import Travel from "./components/Travel";
@@ -30,14 +31,15 @@ export default function App() {
   const showBio = route === "" || route === "#home" || route === "#books"  || route === "#travel" || route === "#contact";
 
   return (
-    <div className="min-h-screen bg-paper text-red-900 flex">
-      <Navbar currentRoute={route} />
+    <div className="h-screen bg-paper text-red-900 flex overflow-hidden">
+      <Navbar currentRoute={route} showBio={showBio} />
 
-      <main className="flex-1 p-8 max-w-5xl mx-auto">
+      <main className="flex-1 p-8 max-w-5xl mx-auto overflow-y-auto hide-scrollbar ml-24 lg:mr-80">
         {(route === "" || route === "#home") && (
           <>
             <Home />
-            <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Projects />
+            <section className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
               <Blog />
               <Stack />
             </section>
@@ -92,9 +94,32 @@ export default function App() {
       <style>{`
         :root {
           --paper: #faf7ef;
+          --grid-color: #e8e5d8;
         }
         .bg-paper {
-          background: var(--paper);
+          background-color: var(--paper);
+          background-image: 
+            linear-gradient(var(--grid-color) 0.5px, transparent 0.5px),
+            linear-gradient(90deg, var(--grid-color) 0.5px, transparent 0.5px);
+          background-size: 30px 30px;
+          position: relative;
+        }
+        .bg-paper::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-image: 
+            radial-gradient(circle at 0.5px 0.5px, rgba(0,0,0,0.015) 0.5px, transparent 0);
+          background-size: 15px 15px;
+          pointer-events: none;
+          z-index: 0;
+        }
+        .bg-paper > * {
+          position: relative;
+          z-index: 1;
         }
         .section-title {
           font-weight: 600;
@@ -112,6 +137,14 @@ export default function App() {
           background: transparent;
           color: #0f172a;
           border: 1px solid #e5e7eb;
+        }
+        /* Hide scrollbar but keep scrolling functionality */
+        .hide-scrollbar {
+          -ms-overflow-style: none;  /* IE and Edge */
+          scrollbar-width: none;  /* Firefox */
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;  /* Chrome, Safari, Opera */
         }
       `}</style>
     </div>
