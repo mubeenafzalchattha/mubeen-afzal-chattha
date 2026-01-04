@@ -21,7 +21,7 @@ const PROJECTS: Project[] = [
     id: "replyguy",
     title: "Reply Guy",
     description: "Be a reply guy to grow on X and linkedin. Be productive, Set a goal, track your time and progress",
-    link: "https://example.com",
+    link: "https://contentcalendar.live",
     tags: ["Chrome extenion","Count Replies", "Track your time"],
   },
   {
@@ -36,7 +36,7 @@ const PROJECTS: Project[] = [
 export default function Projects() {
   return (
     <section className="mt-8">
-      <h2 className="section-title mb-6">Projects</h2>
+      {/* <h2 className="section-title mb-6">Projects</h2> */}
       <div className="grid grid-cols-1 md:!grid-cols-3 gap-6">
 
         {PROJECTS.map((project) => (
